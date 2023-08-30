@@ -29,7 +29,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
         validated_data['created_date'] = timezone.now()
         return super().create(validated_data)
         
-class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
+class PostDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     # comments = serializers.HyperlinkedRelatedField(many=True, view_name='comment-detail', read_only=True)
     class Meta:
