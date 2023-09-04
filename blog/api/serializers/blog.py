@@ -2,13 +2,15 @@ from ...models import Post
 from rest_framework import serializers
 from django.utils import timezone
 from .comment import CommentSerializer
+from .user import UserPublicSerializer
 
 class PostListSerializer(serializers.ModelSerializer):
+    author_details = UserPublicSerializer(source='author', read_only=True)
     class Meta:
         model = Post
         fields = [
             'id',
-            'author',
+            'author_details',
             'title',
             'text',
             'created_date',
@@ -19,6 +21,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
+            'id',
             'title',
             'text',
             'published_date',
@@ -31,13 +34,12 @@ class PostCreateSerializer(serializers.ModelSerializer):
         
 class PostDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    # comments = serializers.HyperlinkedRelatedField(many=True, view_name='comment-detail', read_only=True)
+    author_details = UserPublicSerializer(source='author', read_only=True)
     class Meta:
         model = Post
         fields = [
             'id',
-            'url',
-            'author',
+            'author_details',
             'title',
             'text',
             'created_date',
