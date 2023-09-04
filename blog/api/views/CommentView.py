@@ -42,8 +42,7 @@ class PostCommentListCreateView(generics.ListCreateAPIView):
         # serializer.save(user=self.request.user)
         list = Post.objects.filter(pk=self.kwargs.get('pk'))
         if not list.exists():
-            print("inside list does not exists")
             raise Http404("Post does not exist")
 
-        serializer.save(post=post_id)
+        serializer.save(post=list[0])
 post_comment_list_create_view = PostCommentListCreateView.as_view()
